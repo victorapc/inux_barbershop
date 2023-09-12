@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inux_barbershop/src/features/core/ui/constants.dart';
+import 'package:inux_barbershop/src/core/ui/constants.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
