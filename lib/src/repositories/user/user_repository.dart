@@ -1,5 +1,6 @@
+import 'package:inux_barbershop/src/core/exceptions/auth_exception.dart';
 import 'package:inux_barbershop/src/core/fp/either.dart';
 
 abstract interface class UserRepository {
-  Future<Either<Exception, String>> login(String email, String password);
+  Future<Either<AuthException, String>> login(String email, String password);
 }
