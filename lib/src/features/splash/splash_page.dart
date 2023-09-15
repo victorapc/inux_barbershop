@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Colors.black,
       body: DecoratedBox(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -41,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
         ),
         child: Center(
           child: AnimatedOpacity(
-            duration: const Duration(seconds: 3),
+            duration: const Duration(seconds: 2),
             curve: Curves.easeIn,
             opacity: _animationOpactityLogo,
             onEnd: () {
@@ -63,7 +63,7 @@ class _SplashPageState extends State<SplashPage> {
               );
             },
             child: AnimatedContainer(
-              duration: const Duration(seconds: 3),
+              duration: const Duration(seconds: 2),
               width: _logoAnimationWidth,
               height: _logoAnimationHeight,
               curve: Curves.linearToEaseOut,

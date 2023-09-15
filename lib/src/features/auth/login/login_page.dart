@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:inux_barbershop/src/core/ui/constants.dart';
 import 'package:inux_barbershop/src/core/ui/helpers/form_helper.dart';
+import 'package:inux_barbershop/src/core/ui/helpers/messages.dart';
+import 'package:inux_barbershop/src/features/auth/login/login_state.dart';
 import 'package:inux_barbershop/src/features/auth/login/login_vm.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -27,10 +29,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     // Recuperar a instancia notifier da loginVm.
-    final loginVM = ref.watch(loginVmProvider.notifier);
+    // loginVmProvider.notifier é o acesso ao view model.
+    final LoginVm(:login) = ref.watch(loginVmProvider.notifier);
+    // loginVmProvider sem o .notifier é acesso ao estado.
+    ref.listen(loginVmProvider, (_, state) {
+      switch (state) {
+        case LoginState(status: LoginStateStatus.initial):
+          break;
+        case LoginState(status: LoginStateStatus.error, :final errorMessage?):
+          Messages.showError(errorMessage, context);
+        case LoginState(status: LoginStateStatus.error):
+          Messages.showError('Erro ao realizar login', context);
+        case LoginState(status: LoginStateStatus.admLogin):
+          break;
+        case LoginState(status: LoginStateStatus.employeeLogin):
+          break;
+      }
+    });
 
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Colors.black,
       body: Form(
         key: _formKey,
         child: DecoratedBox(
@@ -123,7 +141,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             style: ElevatedButton.styleFrom(
                               minimumSize: const Size.fromHeight(56),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              switch (_formKey.currentState?.validate()) {
+                                case (false || null):
+                                  Messages.showError(
+                                      'Campos inválidos.', context);
+                                case true:
+                                  login(_emailEC.text, _passwordEC.text);
+                              }
+                            },
                             child: const Text('ACESSAR'),
                           ),
                         ],
