@@ -6,7 +6,7 @@ part of 'login_vm.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loginVmHash() => r'f63d1894670ab7380eea5ee14b55c064e3522522';
+String _$loginVmHash() => r'8dab91af1a16b56904c3a7fe40f85a85acbd4f23';
 
 /// See also [LoginVm].
 @ProviderFor(LoginVm)
