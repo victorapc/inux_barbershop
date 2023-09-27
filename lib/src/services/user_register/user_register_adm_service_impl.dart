@@ -2,15 +2,14 @@ import 'package:inux_barbershop/src/core/exceptions/service_exception.dart';
 import 'package:inux_barbershop/src/core/fp/either.dart';
 import 'package:inux_barbershop/src/core/fp/nil.dart';
 import 'package:inux_barbershop/src/repositories/user/user_repository.dart';
+import 'package:inux_barbershop/src/services/user_register/user_register_adm_service.dart';
 import 'package:inux_barbershop/src/services/users_login/user_login_service.dart';
 
-import './user_register_service.dart';
-
-class UserRegisterServiceImpl implements UserRegisterService {
+class UserRegisterAdmServiceImpl implements UserRegisterAdmService {
   final UserRepository userRepository;
   final UserLoginService userLoginService;
 
-  UserRegisterServiceImpl({
+  UserRegisterAdmServiceImpl({
     required this.userRepository,
     required this.userLoginService,
   });
