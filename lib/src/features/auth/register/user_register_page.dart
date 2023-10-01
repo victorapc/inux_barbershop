@@ -36,7 +36,8 @@ class _UserRegisterPageState extends ConsumerState<UserRegisterPage> {
         case UserRegisterStateStatus.initial:
           break;
         case UserRegisterStateStatus.success:
-          Navigator.of(context).pushNamed('/auth/register/barbershop');
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/auth/register/barbershop', (route) => false);
         case UserRegisterStateStatus.error:
           Messages.showError(
               'Erro ao registrar usuário administrador.', context);
@@ -62,6 +63,7 @@ class _UserRegisterPageState extends ConsumerState<UserRegisterPage> {
                   TextFormField(
                     onTapOutside: (_) => unfocus(context),
                     controller: _nameEC,
+                    textCapitalization: TextCapitalization.words,
                     validator: Validatorless.required('Nome obrigatório'),
                     decoration: const InputDecoration(
                       label: Text('Nome'),
@@ -107,6 +109,7 @@ class _UserRegisterPageState extends ConsumerState<UserRegisterPage> {
                       Validatorless.compare(
                           _passwordEC, 'Senha diferente de confirmar senha.'),
                     ]),
+                    obscureText: true,
                     decoration: const InputDecoration(
                       label: Text('Confirmar Senha'),
                     ),
