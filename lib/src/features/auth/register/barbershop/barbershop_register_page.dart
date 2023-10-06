@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inux_barbershop/src/core/ui/helpers/form_helper.dart';
+import 'package:inux_barbershop/src/core/ui/widgets/hours_painel.dart';
 import 'package:inux_barbershop/src/core/ui/widgets/weekdays_panel.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -13,7 +14,7 @@ class BarbershopRegisterPage extends StatelessWidget {
         title: const Text('Criar Estabelecimento'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -48,9 +49,9 @@ class BarbershopRegisterPage extends StatelessWidget {
               const SizedBox(
                 height: 24,
               ),
-              const SizedBox(
-                height: 178,
-                child: Placeholder(),
+              const HoursPainel(
+                startTime: 6,
+                endTime: 23,
               ),
               const SizedBox(
                 height: 24,
