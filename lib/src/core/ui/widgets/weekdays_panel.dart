@@ -2,25 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:inux_barbershop/src/core/ui/constants.dart';
 
 class WeekdaysPanel extends StatelessWidget {
+  final ValueChanged<String> onDayPressed;
+
   const WeekdaysPanel({
     super.key,
+    required this.onDayPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Selecione os Dias da Semana',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           SingleChildScrollView(
@@ -30,24 +33,31 @@ class WeekdaysPanel extends StatelessWidget {
               children: [
                 ButtonDay(
                   label: 'Seg',
+                  onDayPressed: onDayPressed,
                 ),
                 ButtonDay(
                   label: 'Ter',
+                  onDayPressed: onDayPressed,
                 ),
                 ButtonDay(
                   label: 'Qua',
+                  onDayPressed: onDayPressed,
                 ),
                 ButtonDay(
                   label: 'Qui',
+                  onDayPressed: onDayPressed,
                 ),
                 ButtonDay(
                   label: 'Sex',
+                  onDayPressed: onDayPressed,
                 ),
                 ButtonDay(
                   label: 'Sab',
+                  onDayPressed: onDayPressed,
                 ),
                 ButtonDay(
                   label: 'Dom',
+                  onDayPressed: onDayPressed,
                 ),
               ],
             ),
@@ -58,35 +68,54 @@ class WeekdaysPanel extends StatelessWidget {
   }
 }
 
-class ButtonDay extends StatelessWidget {
+class ButtonDay extends StatefulWidget {
   final String label;
+  final ValueChanged<String> onDayPressed;
 
   const ButtonDay({
     super.key,
     required this.label,
+    required this.onDayPressed,
   });
 
   @override
+  State<ButtonDay> createState() => _ButtonDayState();
+}
+
+class _ButtonDayState extends State<ButtonDay> {
+  var selected = false;
+
+  @override
   Widget build(BuildContext context) {
+    final textColor = selected ? Colors.white : ColorsConstants.grey;
+    var buttonColor = selected ? ColorsConstants.brow : Colors.white;
+    final buttonBorderColor =
+        selected ? ColorsConstants.brow : ColorsConstants.grey;
+
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          widget.onDayPressed(widget.label);
+          setState(() {
+            selected = !selected;
+          });
+        },
         borderRadius: BorderRadius.circular(8),
         child: Container(
           width: 40,
           height: 56,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-            border: Border.all(color: ColorsConstants.grey),
+            color: buttonColor,
+            border: Border.all(color: buttonBorderColor),
           ),
           child: Center(
             child: Text(
-              label,
-              style: const TextStyle(
+              widget.label,
+              style: TextStyle(
                 fontSize: 12,
-                color: ColorsConstants.grey,
+                color: textColor,
                 fontWeight: FontWeight.w500,
               ),
             ),

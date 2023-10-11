@@ -45,7 +45,11 @@ class BarbershopRegisterPage extends StatelessWidget {
               const SizedBox(
                 height: 24,
               ),
-              const WeekdaysPanel(),
+              WeekdaysPanel(
+                onDayPressed: (value) {
+                  print('Dia selecionado $value');
+                },
+              ),
               const SizedBox(
                 height: 24,
               ),
