@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:inux_barbershop/src/core/ui/constants.dart';
 import 'package:inux_barbershop/src/core/ui/helpers/messages.dart';
-import 'package:inux_barbershop/src/features/auth/login/login_page.dart';
 import 'package:inux_barbershop/src/features/splash/splash_vm.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
