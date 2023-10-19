@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:inux_barbershop/src/core/fp/either.dart';
 import 'package:inux_barbershop/src/core/restclient/rest_client.dart';
+import 'package:inux_barbershop/src/core/ui/barbershop_nav_global_key.dart';
 import 'package:inux_barbershop/src/model/barbershop_model.dart';
 import 'package:inux_barbershop/src/model/user_model.dart';
 import 'package:inux_barbershop/src/repositories/barbershop/barbershop_repository.dart';
@@ -9,6 +11,7 @@ import 'package:inux_barbershop/src/repositories/user/user_repository_impl.dart'
 import 'package:inux_barbershop/src/services/users_login/user_login_service.dart';
 import 'package:inux_barbershop/src/services/users_login/user_login_service_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'application_providers.g.dart';
 
@@ -48,4 +51,16 @@ Future<BarbershopModel> getMyBarberShop(GetMyBarberShopRef ref) async {
     Success(value: final barbershop) => barbershop,
     Failure(:final exception) => throw exception
   };
+}
+
+@riverpod
+Future<void> logout(LogoutRef ref) async {
+  final sp = await SharedPreferences.getInstance();
+  sp.clear();
+
+  ref.invalidate(getMeProvider);
+  ref.invalidate(getMyBarberShopProvider);
+
+  Navigator.of(BarbershopNavGlobalKey.instance.navKey.currentContext!)
+      .pushNamedAndRemoveUntil('/auth/login', (route) => false);
 }
