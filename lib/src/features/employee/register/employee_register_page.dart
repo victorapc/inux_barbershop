@@ -95,6 +95,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                   startTime: 6,
                   endTime: 23,
                   onHourPressed: (hour) {},
+                  enableTimes: const [6, 7, 8, 9],
                 ),
                 const SizedBox(
                   height: 24,
