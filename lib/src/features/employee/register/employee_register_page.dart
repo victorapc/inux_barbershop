@@ -85,6 +85,7 @@ class _EmployeeRegisterPageState extends State<EmployeeRegisterPage> {
                   ),
                 ),
                 WeekdaysPanel(
+                  enableDays: const ['Seg', 'Qua'],
                   onDayPressed: (day) {},
                 ),
                 const SizedBox(
