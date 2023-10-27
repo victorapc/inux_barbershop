@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:inux_barbershop/src/core/providers/application_providers.dart';
+import 'package:inux_barbershop/src/core/ui/helpers/messages.dart';
 import 'package:inux_barbershop/src/core/ui/widgets/avatar_widget.dart';
 import 'package:inux_barbershop/src/core/ui/widgets/barbershop_loader.dart';
 import 'package:inux_barbershop/src/core/ui/widgets/hours_painel.dart';
 import 'package:inux_barbershop/src/core/ui/widgets/weekdays_panel.dart';
+import 'package:inux_barbershop/src/features/employee/register/employee_register_state.dart';
 import 'package:inux_barbershop/src/features/employee/register/employee_register_vm.dart';
 import 'package:inux_barbershop/src/model/barbershop_model.dart';
 import 'package:validatorless/validatorless.dart';
@@ -38,6 +40,19 @@ class _EmployeeRegisterPageState extends ConsumerState<EmployeeRegisterPage> {
   Widget build(BuildContext context) {
     final employeeRegisterVm = ref.watch(employeeRegisterVmProvider.notifier);
     final barbershopAsyncValue = ref.watch(getMyBarberShopProvider);
+
+    ref.listen(employeeRegisterVmProvider.select((state) => state.status),
+        (_, status) {
+      switch (status) {
+        case EmployeeRegisterStateStatus.initial:
+          break;
+        case EmployeeRegisterStateStatus.success:
+          Messages.showSuccess('Colaborador cadastrado com sucesso.', context);
+          Navigator.of(context).pop();
+        case EmployeeRegisterStateStatus.error:
+          Messages.showError('Erro ao registrar colaborador.', context);
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -98,8 +113,9 @@ class _EmployeeRegisterPageState extends ConsumerState<EmployeeRegisterPage> {
                           children: [
                             TextFormField(
                               controller: _nameEC,
-                              validator:
-                                  Validatorless.required('Nome obrigatório.'),
+                              validator: registerADM
+                                  ? null
+                                  : Validatorless.required('Nome obrigatório.'),
                               decoration: const InputDecoration(
                                 label: Text('Nome'),
                               ),
@@ -109,10 +125,13 @@ class _EmployeeRegisterPageState extends ConsumerState<EmployeeRegisterPage> {
                             ),
                             TextFormField(
                               controller: _emailEC,
-                              validator: Validatorless.multiple([
-                                Validatorless.required('E-mail obrigatório.'),
-                                Validatorless.email('E-mail inválido.'),
-                              ]),
+                              validator: registerADM
+                                  ? null
+                                  : Validatorless.multiple([
+                                      Validatorless.required(
+                                          'E-mail obrigatório.'),
+                                      Validatorless.email('E-mail inválido.'),
+                                    ]),
                               decoration: const InputDecoration(
                                 label: Text('E-mail'),
                               ),
@@ -122,11 +141,14 @@ class _EmployeeRegisterPageState extends ConsumerState<EmployeeRegisterPage> {
                             ),
                             TextFormField(
                               controller: _passwordEC,
-                              validator: Validatorless.multiple([
-                                Validatorless.required('Senha obrigatória.'),
-                                Validatorless.min(6,
-                                    'A senha deve conter no mínimo 6 caracters.'),
-                              ]),
+                              validator: registerADM
+                                  ? null
+                                  : Validatorless.multiple([
+                                      Validatorless.required(
+                                          'Senha obrigatória.'),
+                                      Validatorless.min(6,
+                                          'A senha deve conter no mínimo 6 caracters.'),
+                                    ]),
                               obscureText: true,
                               decoration: const InputDecoration(
                                 label: Text('Senha'),
@@ -158,7 +180,35 @@ class _EmployeeRegisterPageState extends ConsumerState<EmployeeRegisterPage> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(56),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          switch (_formKey.currentState?.validate()) {
+                            case false || null:
+                              Messages.showError(
+                                  'Existem campos inválidos.', context);
+                            case true:
+                              final EmployeeRegisterState(
+                                workDays: List(isNotEmpty: hasWorkDays),
+                                workHours: List(isNotEmpty: hasWorkHours),
+                              ) = ref.watch(employeeRegisterVmProvider);
+
+                              if (!hasWorkDays || !hasWorkHours) {
+                                Messages.showError(
+                                    'Por favor selecione os dias da semana e horário de atendimento.',
+                                    context);
+                                return;
+                              }
+
+                              final name = _nameEC.text;
+                              final email = _emailEC.text;
+                              final password = _passwordEC.text;
+
+                              employeeRegisterVm.register(
+                                name: name,
+                                email: email,
+                                password: password,
+                              );
+                          }
+                        },
                         child: const Text('CADASTRAR COLABORADOR'),
                       ),
                     ],
