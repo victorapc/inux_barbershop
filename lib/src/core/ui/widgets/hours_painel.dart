@@ -65,7 +65,11 @@ class _HoursPainelState extends State<HoursPainel> {
                   onPressed: (timeSelected) {
                     setState(() {
                       if (singleSelection) {
-                        lastSelection = timeSelected;
+                        if (lastSelection == timeSelected) {
+                          lastSelection = null;
+                        } else {
+                          lastSelection = timeSelected;
+                        }
                       }
                     });
                     widget.onHourPressed(timeSelected);
@@ -106,12 +110,29 @@ class _TimeButtonState extends State<TimeButton> {
 
   @override
   Widget build(BuildContext context) {
+    final TimeButton(
+      :singleSelection,
+      :timeSelected,
+      :value,
+      :label,
+      :enableTimes,
+      :onPressed
+    ) = widget;
+
+    if (singleSelection) {
+      if (timeSelected != null) {
+        if (timeSelected == value) {
+          selected = true;
+        } else {
+          selected = false;
+        }
+      }
+    }
+
     final textColor = selected ? Colors.white : ColorsConstants.grey;
     var buttonColor = selected ? ColorsConstants.brow : Colors.white;
     final buttonBorderColor =
         selected ? ColorsConstants.brow : ColorsConstants.grey;
-
-    final TimeButton(:enableTimes, :value, :label, :onPressed) = widget;
 
     final disableTime = enableTimes != null && !enableTimes.contains(value);
 
