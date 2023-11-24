@@ -34,9 +34,11 @@ class _SchedulePageState extends ConsumerState<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
+    final scheduleVM = ref.watch(scheduleVmProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Agendar Cliente'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -110,6 +112,7 @@ class _SchedulePageState extends ConsumerState<SchedulePage> {
                           okPressed: (value) {
                             setState(() {
                               dateEC.text = dateFormat.format(value);
+                              scheduleVM.dataSelect(value);
                               showCalendar = false;
                             });
                           },
@@ -123,7 +126,7 @@ class _SchedulePageState extends ConsumerState<SchedulePage> {
                   HoursPainel.singleSelection(
                     startTime: 6,
                     endTime: 23,
-                    onHourPressed: (hour) {},
+                    onHourPressed: scheduleVM.hourSelect,
                     enableTimes: [6, 7, 8],
                   ),
                   const SizedBox(
