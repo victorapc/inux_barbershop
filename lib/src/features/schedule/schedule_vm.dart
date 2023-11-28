@@ -1,4 +1,5 @@
 import 'package:asyncstate/class/async_loader_handler.dart';
+import 'package:intl/intl.dart';
 import 'package:inux_barbershop/src/core/fp/either.dart';
 import 'package:inux_barbershop/src/core/providers/application_providers.dart';
 import 'package:inux_barbershop/src/features/schedule/schedule_state.dart';
@@ -40,11 +41,15 @@ class ScheduleVm extends _$ScheduleVm {
     final BarbershopModel(id: barbershopId) =
         await ref.watch(getMyBarberShopProvider.future);
 
+    String formattedDateString = DateFormat('yyyy-MM-dd').format(scheduleDate!);
+    DateTime convertedDateTime =
+        DateFormat('yyyy-MM-dd').parse(formattedDateString);
+
     final dto = (
       barbershopId: barbershopId,
       userId: userModel.id,
       clientName: clientName,
-      date: scheduleDate!,
+      date: convertedDateTime,
       time: scheduleHour!
     );
 

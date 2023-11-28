@@ -7,11 +7,13 @@ import 'package:inux_barbershop/src/core/ui/constants.dart';
 class ScheduleCalendar extends StatefulWidget {
   final VoidCallback cancelPressed;
   final ValueChanged<DateTime> okPressed;
+  final List<String> workDays;
 
   const ScheduleCalendar({
     Key? key,
     required this.cancelPressed,
     required this.okPressed,
+    required this.workDays,
   }) : super(key: key);
 
   @override
@@ -20,6 +22,26 @@ class ScheduleCalendar extends StatefulWidget {
 
 class _ScheduleCalendarState extends State<ScheduleCalendar> {
   DateTime? selectedDay;
+  late final List<int> weekDaysEnable;
+
+  int convertWeekDay(String weekday) {
+    return switch (weekday.toLowerCase()) {
+      'seg' => DateTime.monday,
+      'ter' => DateTime.tuesday,
+      'qua' => DateTime.wednesday,
+      'qua' => DateTime.wednesday,
+      'sex' => DateTime.friday,
+      'sab' => DateTime.saturday,
+      'dom' => DateTime.sunday,
+      _ => 0
+    };
+  }
+
+  @override
+  void initState() {
+    weekDaysEnable = widget.workDays.map(convertWeekDay).toList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +64,9 @@ class _ScheduleCalendarState extends State<ScheduleCalendar> {
             ),
             calendarFormat: CalendarFormat.month,
             locale: 'pt_BR',
+            enabledDayPredicate: (day) {
+              return weekDaysEnable.contains(day.weekday);
+            },
             availableCalendarFormats: const {
               CalendarFormat.month: 'Month',
             },
