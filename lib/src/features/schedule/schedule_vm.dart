@@ -41,15 +41,11 @@ class ScheduleVm extends _$ScheduleVm {
     final BarbershopModel(id: barbershopId) =
         await ref.watch(getMyBarberShopProvider.future);
 
-    String formattedDateString = DateFormat('yyyy-MM-dd').format(scheduleDate!);
-    DateTime convertedDateTime =
-        DateFormat('yyyy-MM-dd').parse(formattedDateString);
-
     final dto = (
       barbershopId: barbershopId,
       userId: userModel.id,
       clientName: clientName,
-      date: convertedDateTime,
+      date: scheduleDate!,
       time: scheduleHour!
     );
 
