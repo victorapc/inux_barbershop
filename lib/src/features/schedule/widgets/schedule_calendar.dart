@@ -29,7 +29,7 @@ class _ScheduleCalendarState extends State<ScheduleCalendar> {
       'seg' => DateTime.monday,
       'ter' => DateTime.tuesday,
       'qua' => DateTime.wednesday,
-      'qua' => DateTime.wednesday,
+      'qui' => DateTime.thursday,
       'sex' => DateTime.friday,
       'sab' => DateTime.saturday,
       'dom' => DateTime.sunday,
